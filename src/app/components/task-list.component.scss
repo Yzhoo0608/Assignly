@@ -1,0 +1,59 @@
+// src/app/components/task-list.component.scss
+ion-header {
+  --background: var(--ion-color-primary);
+  color: white;
+}
+
+ion-title {
+  font-weight: 600;
+}
+
+.add-task-card {
+  margin-top: 1rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+ion-item {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  --min-height: 56px;
+}
+
+ion-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+ion-badge {
+  font-size: 0.8rem;
+  text-transform: capitalize;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.empty-card {
+  text-align: center;
+  margin-top: 3rem;
+  color: var(--ion-color-medium);
+}
+
+.empty-card ion-icon {
+  font-size: 48px;
+  margin-bottom: 0.5rem;
+}
+
+.center-spinner {
+  display: block;
+  margin: 2rem auto;
+}
+
+ion-content {
+  --background: #f9fafc;
+}
+
+ion-item-sliding {
+  border-radius: 12px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
