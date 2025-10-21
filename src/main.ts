@@ -2,32 +2,30 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { IonicStorageModule } from '@ionic/storage-angular';
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
 import { AppComponent } from './app/app.component';
-import { environment } from './environments/environment';
 import { routes } from './app/app.routes';
+import { environment } from './environments/environment';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
-// ✅ Initialize Firebase manually
-const app = initializeApp(environment.firebaseConfig);
-const firestore = getFirestore(app);
+// Firebase imports (AngularFire v20)
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideIonicAngular(),
     provideRouter(routes),
     provideAnimations(),
-    importProvidersFrom(
-      IonicModule.forRoot(),
-      IonicStorageModule.forRoot()
-    ),
-    provideRouter(routes),
-    
-    // ✅ Provide manually initialized Firestore instance
-    { provide: 'FIRESTORE_INSTANCE', useValue: firestore }
-  ]
+
+    // These are fine as direct providers now
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
+
+    // Ionic Storage still uses importProvidersFrom
+    importProvidersFrom(IonicStorageModule.forRoot()),
+  ],
 }).catch(err => console.error(err));
+
+

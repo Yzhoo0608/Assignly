@@ -1,16 +1,43 @@
 // src/global.scss
+
+// Ionic core & basic CSS
 @import "@ionic/angular/css/core.css";
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
 
-/* Optional Ionic utilities */
+// Optional Ionic utilities
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+// App Theme
+
+:root {
+  /* Primary theme color (matches your brand) */
+  --ion-color-primary: #b2493d;
+  --ion-color-primary-rgb: 178, 73, 61;
+
+  /* Background and text */
+  --ion-background-color: #fafafa;
+  --ion-text-color: #2c3e50;
+
+  font-family: 'Poppins', 'Roboto', sans-serif;
+  background-color: var(--ion-background-color);
+  color: var(--ion-text-color);
+}
+
+/* Basic header style */
+ion-header, ion-toolbar {
+  background: var(--ion-color-primary);
+  color: white;
+  font-weight: 600;
+}
+
+
 
 
 

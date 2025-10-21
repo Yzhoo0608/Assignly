@@ -1,12 +1,20 @@
+// src/app/home/home.page.ts
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { TaskListComponent } from '../components/task-list.component'; // adjust path if needed
 
 @Component({
   selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent],
+  standalone: true,
+  templateUrl: './home.page.html',
+  styleUrls: ['./home.page.scss'],
+  imports: [IonicModule, CommonModule, TaskListComponent],
 })
 export class HomePage {
-  constructor() {}
+  // no need to redefine toggleAdd() here — handled inside TaskListComponent
 }
+
+
+
+

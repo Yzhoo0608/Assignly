@@ -1,7 +1,10 @@
 // src/app/app.routes.ts
 import { Routes } from '@angular/router';
-import { TaskListComponent } from './components/task-list.component';
+import { HomePage } from './home/home.page';
 
 export const routes: Routes = [
-  { path: '', component: TaskListComponent }
+  { path: '', component: HomePage },
 ];
+
+
+

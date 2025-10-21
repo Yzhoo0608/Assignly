@@ -1,19 +1,18 @@
 <!-- src/app/components/task-list.component.html -->
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Task List</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="toggleAdd()">
-        {{ isAdding ? 'Cancel' : 'Add Task' }}
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding task-content">
 
-<ion-content class="ion-padding">
+  <!-- Header + Add Button -->
+  <div class="header-row">
+    <h2 class="section-title">Tasks List</h2>
+    <ion-button class="toggle-btn" fill="outline" color="primary" (click)="toggleAdd()">
+      <ion-icon slot="start" [name]="isAdding ? 'close' : 'add-outline'"></ion-icon>
+      {{ isAdding ? 'x Cancel' : '+ Add Task' }}
+    </ion-button>
+  </div>
 
-  <!-- ✅ Add Task Form -->
-  <ion-card *ngIf="isAdding">
+
+  <!-- Add Task Form -->
+  <ion-card *ngIf="isAdding" class="add-card">
     <ion-card-header>
       <ion-card-title>Add New Task</ion-card-title>
     </ion-card-header>
@@ -37,38 +36,81 @@
         </ion-select>
       </ion-item>
 
-      <ion-button expand="block" (click)="addTask()">Add Task</ion-button>
+      <ion-button expand="block" class="add-btn" (click)="addTask()">Add Task</ion-button>
     </ion-card-content>
   </ion-card>
 
-  <!-- ✅ Task List -->
-  <ion-list *ngIf="tasks$ | async as tasks; else noTasks">
-    <ion-item *ngFor="let task of tasks">
-      <ion-label>
-        <h2>{{ task.subject }}</h2>
-        <p>Deadline: {{ task.deadline | date }}</p>
-      </ion-label>
+  <!-- 🔹 Task List -->
+  <ion-list *ngIf="tasks$ | async as tasks; else noTasks" class="task-list">
+    <div *ngFor="let task of tasks" class="task-row">
+      <!-- Left: Date Card -->
+      <ion-card class="date-card">
+        <ion-card-content>
+          <h2>{{ task.deadline | date:'dd' }}</h2>
+          <p>{{ task.deadline | date:'MMM' }}</p>
+        </ion-card-content>
+      </ion-card>
 
-      <ion-select
-        [value]="task.status"
-        (ionChange)="updateStatus(task, $event)"
-        interface="popover"
-        placeholder="Select Status">
-        <ion-select-option value="not started">Not Started</ion-select-option>
-        <ion-select-option value="in progress">In Progress</ion-select-option>
-        <ion-select-option value="completed">Completed</ion-select-option>
-      </ion-select>
+      <!-- Right: Task Detail Card -->
+  <ion-card
+    class="task-card"
+    [ngClass]="{ 'completed-task': task.status === 'completed' }"
+  >
+    <ion-card-content>
+      <div class="task-header">
+        <div class="task-title">
+          <h3>{{ task.subject }}</h3>
+          <p class="task-deadline">Due: {{ task.deadline | date:'longDate' }}</p>
+        </div>
 
-      <ion-button color="danger" fill="clear" (click)="deleteTask(task)">
-        <ion-icon name="trash-outline"></ion-icon>
-      </ion-button>
-    </ion-item>
+        <span
+          class="status-badge"
+          [ngClass]="{
+            'completed': task.status === 'completed',
+            'in-progress': task.status === 'in progress',
+            'not-started': task.status === 'not started'
+          }"
+        >
+          {{ task.status | titlecase }}
+        </span>
+      </div>
+
+      <div class="task-footer">
+        <ion-select
+          [value]="task.status"
+          (ionChange)="updateStatus(task, $event)"
+          interface="popover"
+          placeholder="Change Status"
+        >
+          <ion-select-option value="not started">Not Started</ion-select-option>
+          <ion-select-option value="in progress">In Progress</ion-select-option>
+          <ion-select-option value="completed">Completed</ion-select-option>
+        </ion-select>
+
+        <div class="action-buttons">
+          <ion-button class="edit-btn" fill="solid" size="small" (click)="editTask(task)">
+            <ion-icon name="create-outline" slot="start"></ion-icon>
+            Edit
+          </ion-button>
+
+          <ion-button class="delete-btn" fill="solid" size="small" (click)="deleteTask(task)">
+            <ion-icon name="trash-outline" slot="start"></ion-icon>
+            Delete
+          </ion-button>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+    </div>
   </ion-list>
+
 
   <ng-template #noTasks>
     <ion-text color="medium">
-      <p class="ion-text-center">No tasks yet. Add one above!</p>
+      <p class="no-task-text">No tasks yet. Add one above!</p>
     </ion-text>
   </ng-template>
-
 </ion-content>
+
+
