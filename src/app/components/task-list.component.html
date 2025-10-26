@@ -6,41 +6,55 @@
     <h2 class="section-title">Tasks List</h2>
     <ion-button class="toggle-btn" fill="outline" color="primary" (click)="toggleAdd()">
       <ion-icon slot="start" [name]="isAdding ? 'close' : 'add-outline'"></ion-icon>
-      {{ isAdding ? 'x Cancel' : '+ Add Task' }}
+      {{ isAdding ? '× Cancel' : '+ Add Task' }}
     </ion-button>
   </div>
 
+  <!-- Add/Edit Task Form -->
+  <div #formContainer>
+    <ion-card *ngIf="isAdding" class="add-card">
+      <ion-card-header>
+        <ion-card-title>
+          {{ editingTask ? 'Edit Task' : 'Add New Task' }}
+        </ion-card-title>
+      </ion-card-header>
 
-  <!-- Add Task Form -->
-  <ion-card *ngIf="isAdding" class="add-card">
-    <ion-card-header>
-      <ion-card-title>Add New Task</ion-card-title>
-    </ion-card-header>
-    <ion-card-content [formGroup]="taskForm">
-      <ion-item>
-        <ion-label position="stacked">Subject</ion-label>
-        <ion-input formControlName="subject" placeholder="Enter task subject"></ion-input>
-      </ion-item>
+      <ion-card-content [formGroup]="taskForm">
+        <ion-item>
+          <ion-label position="stacked">Subject</ion-label>
+          <ion-input
+            formControlName="subject"
+            placeholder="Enter task subject">
+          </ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Deadline</ion-label>
-        <ion-input formControlName="deadline" type="date"></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Deadline</ion-label>
+          <ion-input
+            formControlName="deadline"
+            type="date"
+            [min]="minDate">
+          </ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="stacked">Status</ion-label>
-        <ion-select formControlName="status">
-          <ion-select-option value="not started">Not Started</ion-select-option>
-          <ion-select-option value="in progress">In Progress</ion-select-option>
-          <ion-select-option value="completed">Completed</ion-select-option>
-        </ion-select>
-      </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Status</ion-label>
+          <ion-select formControlName="status">
+            <ion-select-option value="not started">Not Started</ion-select-option>
+            <ion-select-option value="in progress">In Progress</ion-select-option>
+            <ion-select-option value="completed">Completed</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-      <ion-button expand="block" class="add-btn" (click)="addTask()">Add Task</ion-button>
-    </ion-card-content>
-  </ion-card>
+        <ion-button expand="block" class="add-btn" (click)="addTask()">
+          {{ editingTask ? 'Update Task' : 'Add Task' }}
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
-  <!-- 🔹 Task List -->
+
+  <!-- Task List -->
   <ion-list *ngIf="tasks$ | async as tasks; else noTasks" class="task-list">
     <div *ngFor="let task of tasks" class="task-row">
       <!-- Left: Date Card -->
