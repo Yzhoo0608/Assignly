@@ -12,6 +12,7 @@ import { IonicModule } from '@ionic/angular';
 import { TaskService, Task } from '../services/task.service';
 import { Observable } from 'rxjs';
 
+
 @Component({
   selector: 'app-task-list',
   standalone: true,
@@ -26,7 +27,7 @@ export class TaskListComponent implements OnInit {
   editingTask: Task | null = null;
   minDate: string; // Minimum date (today)
 
-  @ViewChild('formContainer') formContainer!: ElementRef; // ✅ Reference to form section
+  @ViewChild('formContainer') formContainer!: ElementRef;
 
   constructor(private taskService: TaskService, private fb: FormBuilder) {
     const today = new Date();
@@ -34,7 +35,7 @@ export class TaskListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.tasks$ = this.taskService.getTasks();
+    this.tasks$ = this.taskService.tasks$;
 
     this.taskForm = this.fb.group({
       subject: ['', Validators.required],
@@ -49,27 +50,31 @@ export class TaskListComponent implements OnInit {
 
     const formValue = this.taskForm.value;
 
-    if (this.editingTask) {
-      const updatedTask: Task = {
-        ...this.editingTask,
-        subject: formValue.subject,
-        deadline: formValue.deadline,
-        status: formValue.status,
-      };
-      await this.taskService.updateTask(updatedTask);
-      this.editingTask = null;
-    } else {
-      const newTask: Task = {
-        subject: formValue.subject,
-        deadline: formValue.deadline,
-        status: formValue.status,
-      };
-      await this.taskService.addTask(newTask);
-    }
+    const task: Task = {
+      subject: formValue.subject,
+      deadline: formValue.deadline,
+      status: formValue.status,
+    };
 
+    const editing = this.editingTask;
+
+    // --- IMMEDIATE UI UPDATES ---
+    this.isAdding = false;          // close the form instantly
+    this.editingTask = null;        // reset editing task
     this.taskForm.reset({ status: 'not started' });
-    this.isAdding = false;
+
+    // --- BACKGROUND OFFLINE/ONLINE SAVE ---
+    if (editing) {
+      this.taskService.updateTask({ ...editing, ...task }).catch(err =>
+        console.warn('Offline update (will sync later):', err)
+      );
+    } else {
+      this.taskService.addTask(task).catch(err =>
+        console.warn('Offline add (will sync later):', err)
+      );
+    }
   }
+
 
   // Edit existing task + smooth scroll
   editTask(task: Task) {
@@ -90,8 +95,12 @@ export class TaskListComponent implements OnInit {
 
   // Delete task
   async deleteTask(task: Task) {
-    if (confirm(`Delete task "${task.subject}"?`)) {
+    if (!confirm(`Delete task "${task.subject}"?`)) return;
+
+    try {
       await this.taskService.deleteTask(task);
+    } catch (err) {
+      console.warn('Offline delete (will sync later):', err);
     }
   }
 
@@ -112,7 +121,13 @@ export class TaskListComponent implements OnInit {
   async updateStatus(task: Task, event: any) {
     const newStatus = event.detail.value;
     const updatedTask = { ...task, status: newStatus };
-    await this.taskService.updateTask(updatedTask);
+
+    try {
+      await this.taskService.updateTask(updatedTask);
+    } catch (err) {
+      console.warn('Offline status update (will sync later):', err);
+    }
+
   }
 }
 

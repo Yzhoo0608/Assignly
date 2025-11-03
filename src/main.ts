@@ -18,6 +18,7 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     provideRouter(routes),
     provideAnimations(),
+    
 
     // These are fine as direct providers now
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
