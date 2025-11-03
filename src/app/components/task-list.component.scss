@@ -66,6 +66,45 @@
   }
 }
 
+/* Search Bar */
+.search-bar-container {
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+  .modern-searchbar {
+    --background: #fff;
+    --color: #333;
+    --placeholder-color: #999;
+    --icon-color: #b2493d;
+    --border-radius: 12px;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 500px;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.25s ease;
+ 
+    &:hover {
+      filter: brightness(0.98);
+      transform: translateY(-1px);
+    }
+ 
+    &.sc-ion-searchbar-ios-h {
+      padding: 0;
+    }
+ 
+    input {
+      font-size: 0.95rem;
+    }
+  }
+}
+ 
+/* Small animation for smooth search field entrance */
+.search-bar-container {
+  animation: fadeIn 0.4s ease;
+}
+ 
 /* Add Task Card */
 .add-card {
   border-radius: 14px;
