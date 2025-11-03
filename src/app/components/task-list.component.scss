@@ -10,101 +10,115 @@
 /* Header Row */
 .header-row {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
+  flex-direction: column; 
+  width: 100%;
+  margin-bottom: 20px;
 
+  /* Title */
   .section-title {
+    align-self: flex-start;
     font-family: 'Poppins', sans-serif;
     font-size: 1.6rem;
     color: #2c2c2c;
     font-weight: 600;
     letter-spacing: 0.3px;
+    margin-bottom: 10px;
   }
-}
 
-.toggle-btn {
+  /* Underline */
+  .title-underline {
+    align-self: flex-start;
+    width: 120px; 
+    height: 2px; 
+    background: linear-gradient(90deg, #2c2c2c);
+    border-radius: 3px;
+    margin-bottom: 12px; 
+  }
+
+  /* Search Bar */
+  .search-bar-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 12px auto; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.4s ease;
+
+    .modern-searchbar {
+      --background: #fff;
+      --color: #333;
+      --placeholder-color: #999;
+      --icon-color: #b2493d;
+      --border-radius: 12px;
+      --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      height: 40px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.25s ease;
+
+      &:hover {
+        filter: brightness(0.98);
+        transform: translateY(-1px);
+      }
+
+      input {
+        font-size: 0.95rem;
+      }
+    }
+  }
+
+  /* Button */
+  .toggle-btn {
+    align-self: flex-end; 
     --padding-start: 0px;
     --padding-end: 15px;
-  --border-radius: 5px ;
-  --border-color: #b2493d ;
-  --color: #b2493d ;
-  --background: #fff ;
-
-  font-weight: 700 ;
-  letter-spacing: 0.4px;
-  text-transform: none;
-  min-width: 130px;
-  padding: 0 14px;
-  height: 40px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-
-  ion-icon {
-    font-size: 1.1rem;
-    margin-right: 6px;
-  }
-
-  &:hover {
-    background: #f8f1ef ;
-  }
-
-  &::part(native) {
+    --border-radius: 5px;
+    --border-color: #b2493d;
+    --color: #b2493d;
+    --background: #fff;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: none;
+    min-width: 130px;
+    padding: 0 14px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-  }
+    margin-top: 6px; 
+    transition: background 0.2s ease;
 
-  &.cancel-active {
-    --background: #f8f1ef ;
-    --color: #a13d33 ;
-    --border-color: #a13d33 ;
-  }
-}
+    ion-icon {
+      font-size: 1.1rem;
+      margin-right: 6px;
+    }
 
-/* Search Bar */
-.search-bar-container {
-  margin-bottom: 18px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
- 
-  .modern-searchbar {
-    --background: #fff;
-    --color: #333;
-    --placeholder-color: #999;
-    --icon-color: #b2493d;
-    --border-radius: 12px;
-    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    width: 100%;
-    max-width: 500px;
-    font-family: 'Poppins', sans-serif;
-    transition: all 0.25s ease;
- 
     &:hover {
-      filter: brightness(0.98);
-      transform: translateY(-1px);
+      background: #f8f1ef;
     }
- 
-    &.sc-ion-searchbar-ios-h {
-      padding: 0;
-    }
- 
-    input {
-      font-size: 0.95rem;
+
+    &.cancel-active {
+      --background: #f8f1ef;
+      --color: #a13d33;
+      --border-color: #a13d33;
     }
   }
 }
- 
-/* Small animation for smooth search field entrance */
-.search-bar-container {
-  animation: fadeIn 0.4s ease;
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
- 
+
 /* Add Task Card */
 .add-card {
   border-radius: 14px;
@@ -137,6 +151,18 @@
       font-weight: 600;
       color: #2c2c2c;
       font-family: 'Poppins', sans-serif;
+
+      display: flex;
+      align-items: center;
+
+      .error-message {
+        color: #d32f2f;              
+        font-size: 0.8rem;
+        font-weight: 300;            
+        font-style: italic;           
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        margin-left: 0.9rem;
+      }
     }
 
     ion-input,
@@ -178,6 +204,7 @@
   display: flex;
   align-items: stretch;
   gap: 10px;
+  flex-wrap: wrap; /* responsive wrap */
 }
 
 /* Left Date Card */
@@ -212,6 +239,7 @@
 /* Right Task Card */
 .task-card {
   flex: 1;
+  min-width: 220px; /* ensures responsive on small devices */
   border-left: 5px solid #b2493dbd;
   border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -240,6 +268,7 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 8px;
+  flex-wrap: wrap; /* responsive wrap */
 }
 
 .task-title {
@@ -294,6 +323,7 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 6px;
+  flex-wrap: wrap; /* responsive wrap */
 
   ion-select {
     flex: 1;
@@ -306,6 +336,7 @@
 .action-buttons {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap; /* responsive wrap */
 
   ion-button {
     --padding-start: 0px;
@@ -344,7 +375,7 @@
     --background: #f0efee;
     --color: #5c4033; 
     --border-color: #e0d4c7;
-    border: 1px solid var(--border-color);
+    border: 1px;
 
     &:hover {
       --background: #e8dfd3;
@@ -357,7 +388,7 @@
     --background: #f7ebe8; 
     --color: #b2493d;
     --border-color: #e5c8c3;
-    border: 1px solid var(--border-color);
+    border: 1px;
 
     &:hover {
       --background: #f0dcd8;
@@ -365,7 +396,6 @@
     }
   }
 }
-
 
 /* Subtle animation on hover for entire card */
 .task-row:hover .task-card {
@@ -380,6 +410,169 @@
   color: #777;
   font-size: 0.95rem;
 }
+
+/* Responsive Header & Tasks for Phone */
+
+@media screen and (max-width: 480px) {
+
+  /* Header Row Adjustments */
+  .header-row {
+    margin-bottom: 12px;
+
+    /* Title smaller */
+    .section-title {
+      font-size: 1rem; 
+      margin-bottom: 6px;
+    }
+
+    /* Underline smaller */
+    .title-underline {
+      height: 0.5px;  
+      width: 72px;   
+      margin-bottom: 20px;
+    }
+
+    /* Search Bar smaller */
+    .search-bar-container {
+      width: 100%;
+      max-width: 100%;
+      margin-bottom: 20px;
+
+      .modern-searchbar {
+        height: 28px; 
+        --border-radius: 8px;
+        --box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+
+        input {
+          font-size: 0.7rem; 
+        }
+
+        ion-icon {
+          font-size: 0.7rem; 
+        }
+      }
+    }
+
+    /* Toggle / Add Task Button smaller */
+    .toggle-btn {
+      min-width: 70px;
+      height: 28px;
+      font-size: 0.7rem;
+      padding: 0 6px;
+
+      ion-icon {
+        font-size: 0.7rem;
+        margin-right: 3px;
+      }
+    }
+  }
+
+  /* Task Card Adjustments */
+  .task-card {
+    padding: 6px 8px;
+    min-width: 0;
+  }
+
+  /* Task row flex layout */
+  .task-row {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  /* Left side: Subject text */
+  .task-title {
+    flex: 1 1 auto;
+    h3 {
+      font-size: 0.7rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  /* Right side: Due date, status, buttons */
+  .task-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 4px;
+
+    /* Due date text smaller */
+    .task-deadline {
+      font-size: 0.65rem;
+      margin: 0;
+    }
+
+    /* Status badge smaller */
+    .status-badge {
+      font-size: 0.55rem;
+      padding: 1px 4px;
+      border-radius: 10px;
+      border-width: 1px;
+      white-space: nowrap;
+    }
+
+    /* Action buttons smaller */
+    .action-buttons {
+      display: flex;
+      gap: 2px;
+
+      ion-button {
+        --padding-start: 2px !important;
+        --padding-end: 2px !important;
+        --border-radius: 6px !important;
+        --min-width: 10px !important;
+        --height: 10px !important;
+        --font-size: 0.55rem !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        ion-icon {
+          font-size: 0.55rem !important;
+        }
+      }
+
+      /* Edit button */
+      .edit-btn {
+        --border-width: 0.5px !important;
+        --border-color: #d0c6b8 !important;
+      }
+
+      /* Delete button */
+      .delete-btn {
+        --border-width: 0.5px !important;
+        --border-color: #d0b1a5 !important;
+      }
+    }
+  }
+
+  /* Left date card smaller */
+  .date-card {
+    flex: 0 0 12%; 
+    width: auto;
+    padding: 4px 0;
+    h2 { font-size: 0.65rem; }
+    p { font-size: 0.5rem; }
+  }
+
+  /* Status select smaller */
+  .task-footer ion-select {
+    font-size: 0.65rem;
+    max-width: 100px;
+    height: 24px;
+  }
+}
+
+
+
+
+
+
+
+
+
 
 
 

@@ -31,11 +31,63 @@
 }
 
 /* Basic header style */
-ion-header, ion-toolbar {
+ion-header,
+ion-toolbar {
   background: var(--ion-color-primary);
   color: white;
   font-weight: 600;
 }
+
+/* Layout Fix (prevent double scroll) */
+html,
+body {
+  height: 100%;
+  overflow: hidden !important;
+  margin: 0;
+  padding: 0;
+}
+
+ion-app,
+ion-router-outlet,
+ion-page {
+  height: 100%;
+  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main Scroll Area */
+ion-content {
+  flex: 1;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding-bottom: 4rem; /* Gives room for the last card */
+  /* Hide scrollbar in all browsers */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Edge/IE */
+}
+
+ion-content::-webkit-scrollbar,
+ion-content::part(scroll)::-webkit-scrollbar,
+ion-content::part(scroll)::-webkit-scrollbar-thumb {
+  display: none !important; 
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Inside your custom scrollable container*/
+.task-content {
+  overflow: visible !important;
+  height: auto !important;
+  
+}
+
+
+
+
+
 
 
 
