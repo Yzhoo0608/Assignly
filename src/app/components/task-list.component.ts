@@ -1,5 +1,6 @@
 // src/app/components/task-list.component.ts
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'; // ✅ Added ViewChild, ElementRef
+// Updated Cache and Offline Functionality in Task List Component
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -12,7 +13,7 @@ import { IonicModule } from '@ionic/angular';
 import { TaskService, Task } from '../services/task.service';
 import { Observable } from 'rxjs';
 
-
+// Task List Component
 @Component({
   selector: 'app-task-list',
   standalone: true,
@@ -20,6 +21,8 @@ import { Observable } from 'rxjs';
   styleUrls: ['./task-list.component.scss'],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule],
 })
+
+// TaskListComponent class
 export class TaskListComponent implements OnInit {
   tasks$!: Observable<Task[]>;
   taskForm!: FormGroup;
@@ -29,14 +32,17 @@ export class TaskListComponent implements OnInit {
 
   @ViewChild('formContainer') formContainer!: ElementRef;
 
+  // Constructor with TaskService and FormBuilder injection
   constructor(private taskService: TaskService, private fb: FormBuilder) {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
   }
 
   ngOnInit() {
+    // Subscribe to tasks observable
     this.tasks$ = this.taskService.tasks$;
 
+    // Initialize the task form
     this.taskForm = this.fb.group({
       subject: ['', Validators.required],
       deadline: ['', Validators.required],
@@ -46,7 +52,7 @@ export class TaskListComponent implements OnInit {
 
   // Add or Update Task
   async addTask() {
-    if (this.taskForm.invalid) return;
+    if (this.taskForm.invalid) return; 
 
     const formValue = this.taskForm.value;
 
@@ -56,14 +62,14 @@ export class TaskListComponent implements OnInit {
       status: formValue.status,
     };
 
-    const editing = this.editingTask;
+    const editing = this.editingTask; // Capture current editing task
 
-    // --- IMMEDIATE UI UPDATES ---
-    this.isAdding = false;          // close the form instantly
-    this.editingTask = null;        // reset editing task
+    // Reset form and UI state immediately
+    this.isAdding = false;          
+    this.editingTask = null;        
     this.taskForm.reset({ status: 'not started' });
 
-    // --- BACKGROUND OFFLINE/ONLINE SAVE ---
+    // Background operation to add or update task
     if (editing) {
       this.taskService.updateTask({ ...editing, ...task }).catch(err =>
         console.warn('Offline update (will sync later):', err)
@@ -81,6 +87,7 @@ export class TaskListComponent implements OnInit {
     this.isAdding = true;
     this.editingTask = task;
 
+    // Patch form values with selected task
     this.taskForm.patchValue({
       subject: task.subject,
       deadline: task.deadline,
@@ -110,6 +117,7 @@ export class TaskListComponent implements OnInit {
     this.editingTask = null;
     this.taskForm.reset({ status: 'not started' });
 
+    // Smooth scroll to form when opening
     if (this.isAdding) {
       setTimeout(() => {
         this.formContainer?.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });

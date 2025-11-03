@@ -1,19 +1,12 @@
 // src/app/services/task.service.ts
+// Updated Cache and Offline Functionality in Task Service
 import { Injectable } from '@angular/core';
-import {
-  Firestore,
-  collection,
-  collectionData,
-  CollectionReference,
-  addDoc,
-  doc,
-  updateDoc,
-  deleteDoc,
-} from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, CollectionReference, addDoc, doc, updateDoc, deleteDoc} from '@angular/fire/firestore';
 import { Observable, from, of, concat, BehaviorSubject } from 'rxjs';
 import { map, tap, catchError, filter, switchMap } from 'rxjs/operators';
 import { Storage } from '@ionic/storage-angular';
 
+// Define Task interface
 export interface Task {
   id?: string;
   subject: string;
@@ -23,22 +16,25 @@ export interface Task {
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
-  private storageReady: Promise<void>;
-  private tasksSubject = new BehaviorSubject<Task[]>([])
-  tasks$: Observable<Task[]> = this.tasksSubject.asObservable();
-
+  private storageReady: Promise<void>; // To track storage initialization
+  private tasksSubject = new BehaviorSubject<Task[]>([]) // Holds the current list of tasks
+  tasks$: Observable<Task[]> = this.tasksSubject.asObservable(); // Public observable for tasks
+  
   constructor(private firestore: Firestore, private storage: Storage) {
-    this.storageReady = this.initStorage();
-    this.loadTasks();
+    this.storageReady = this.initStorage(); // Initialize storage
+    this.loadTasks(); // Load tasks from cache and network
   }
 
+  // Initialize Ionic Storage
   async initStorage(): Promise<void> {
     await this.storage.create();
   }
 
+  // Load tasks from cache and network
   private loadTasks() {
     const storageReady$ = from(this.storageReady);
 
+    // Load tasks from local storage (cache)
     const cache$ = from(this.storage.get('cachedTasks')).pipe(
       map((cached: Task[] | null) => cached ?? []),
       tap(tasks => console.log('Serving from cache', tasks)),
@@ -46,6 +42,7 @@ export class TaskService {
       catchError(() => of([] as Task[]))
     );
 
+    // Load tasks from Firestore (network)
     const tasksCollection = collection(this.firestore, 'tasks') as CollectionReference<Task>;
 
     const network$ = collectionData(tasksCollection, { idField: 'id' }).pipe(
@@ -57,13 +54,16 @@ export class TaskService {
       })
     );
 
+    // Serve cached tasks first, then update with network tasks
     storageReady$.pipe(switchMap(() => concat(cache$, network$))).subscribe();
   }
 
+  // Sort tasks by deadline
   private sortTasks(tasks: Task[]): Task[] {
     return tasks.sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
   }
 
+  // Add a new task
   async addTask(task: Task) {
     const current = this.tasksSubject.getValue();
     const updated = [...current, task];
@@ -78,6 +78,7 @@ export class TaskService {
     }
   }
 
+  // Update an existing task
   async updateTask(task: Task) {
     const current = this.tasksSubject.getValue();
     const updated = current.map(t => (t.id === task.id ? task : t));
@@ -92,6 +93,7 @@ export class TaskService {
     }
   }
 
+  // Delete a task
   async deleteTask(task: Task) {
     const current = this.tasksSubject.getValue();
     const updated = current.filter(t => t.id !== task.id);
