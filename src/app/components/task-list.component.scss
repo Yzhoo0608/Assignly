@@ -204,7 +204,7 @@
   display: flex;
   align-items: stretch;
   gap: 10px;
-  flex-wrap: wrap; /* responsive wrap */
+  flex-wrap: wrap; 
 }
 
 /* Left Date Card */
@@ -239,7 +239,7 @@
 /* Right Task Card */
 .task-card {
   flex: 1;
-  min-width: 220px; /* ensures responsive on small devices */
+  min-width: 220px; 
   border-left: 5px solid #b2493dbd;
   border-radius: 14px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -268,7 +268,7 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 8px;
-  flex-wrap: wrap; /* responsive wrap */
+  flex-wrap: wrap; 
 }
 
 .task-title {
@@ -323,7 +323,7 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 6px;
-  flex-wrap: wrap; /* responsive wrap */
+  flex-wrap: wrap; 
 
   ion-select {
     flex: 1;

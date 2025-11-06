@@ -26,16 +26,15 @@ import { Subscription } from 'rxjs';
 // TaskListComponent class
 export class TaskListComponent implements OnInit {
   tasks$!: Observable<Task[]>;
-  allTasks: Task[] = [];         // store all tasks locally
-  filteredTasks: Task[] = [];    // list shown after search filter
+  allTasks: Task[] = []; // store all tasks locally
+  filteredTasks: Task[] = []; // list shown after search filter
   taskForm!: FormGroup;
   isAdding = false;
   editingTask: Task | null = null;
   minDate: string;
-  searchTerm = '';              // holds user search input
+  searchTerm = '';  // holds user search input
   subjectError = '';   // Subject required error
   deadlineError = '';  // Deadline required error
-
   duplicateError = '';  // Holds error message for duplicate
  
   private tasksSub?: Subscription;

@@ -17,7 +17,7 @@
 // App Theme
 
 :root {
-  /* Primary theme color (matches your brand) */
+  /* Primary theme color*/
   --ion-color-primary: #b2493d;
   --ion-color-primary-rgb: 178, 73, 61;
 
@@ -63,10 +63,9 @@ ion-content {
   overflow-x: hidden !important;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
-  padding-bottom: 4rem; /* Gives room for the last card */
-  /* Hide scrollbar in all browsers */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Edge/IE */
+  padding-bottom: 4rem; 
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
 }
 
 ion-content::-webkit-scrollbar,
@@ -77,7 +76,6 @@ ion-content::part(scroll)::-webkit-scrollbar-thumb {
   height: 0 !important;
 }
 
-/* Inside your custom scrollable container*/
 .task-content {
   overflow: visible !important;
   height: auto !important;

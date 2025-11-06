@@ -79,6 +79,7 @@
   <!-- Task List -->
   <ion-list *ngIf="filteredTasks.length; else noTasks" class="task-list">
     <div *ngFor="let task of filteredTasks" class="task-row">
+      
       <!-- Left: Date Card -->
       <ion-card class="date-card">
         <ion-card-content>
